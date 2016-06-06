@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+
 class SystemdError(Exception):
     def __init__(self, error):
         self.name = error.get_dbus_name().split('.')[3]

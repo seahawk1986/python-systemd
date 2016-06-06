@@ -24,10 +24,15 @@ dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 from systemd_dbus.property import Property
 from systemd_dbus.exceptions import SystemdError
 
+
 class Job(object):
     """Abstraction class to org.freedesktop.systemd1.Job interface"""
-    def __init__(self, job_path):
-        self.__bus = dbus.SystemBus()
+    def __init__(self, job_path, bus=None):
+        if isinstance(bus, (dbus.SessionBus, dbus.SystemBus)):
+            self.__bus = bus
+        else:
+            self.__bus = dbus.SystemBus()
+
         self.__proxy = self.__bus.get_object(
             'org.freedesktop.systemd1',
             job_path,
@@ -53,7 +58,7 @@ class Job(object):
     def __properties(self):
         properties = self.__properties_interface.GetAll(
             self.__interface.dbus_interface)
-        attr_property =  Property()
+        attr_property = Property()
         for key, value in properties.items():
             setattr(attr_property, key, value)
         setattr(self, 'properties', attr_property)
@@ -61,5 +66,5 @@ class Job(object):
     def cancel(self):
         try:
             self.__interface.Cancel()
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)

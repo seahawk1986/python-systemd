@@ -24,6 +24,7 @@ dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 from systemd_dbus.property import Property
 from systemd_dbus.exceptions import SystemdError
 
+
 class Socket(object):
     """Abstraction class to org.freedesktop.systemd1.Socket interface"""
     def __init__(self, unit_path):
@@ -53,7 +54,7 @@ class Socket(object):
     def __properties(self):
         properties = self.__properties_interface.GetAll(
             self.__interface.dbus_interface)
-        attr_property =  Property()
+        attr_property = Property()
         for key, value in properties.items():
             setattr(attr_property, key, value)
         setattr(self, 'properties', attr_property)

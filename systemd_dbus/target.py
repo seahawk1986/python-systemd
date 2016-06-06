@@ -24,10 +24,14 @@ dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 from systemd_dbus.property import Property
 from systemd_dbus.exceptions import SystemdError
 
+
 class Target(object):
     """Abstraction class to org.freedesktop.systemd1.Target interface"""
-    def __init__(self, unit_path):
-        self.__bus = dbus.SystemBus()
+    def __init__(self, unit_path, bus=None):
+        if isinstance(bus, (dbus.SessionBus, dbus.SystemBus)):
+            self.__bus = bus
+        else:
+            self.__bus = dbus.SystemBus()
 
         self.__proxy = self.__bus.get_object(
             'org.freedesktop.systemd1',
