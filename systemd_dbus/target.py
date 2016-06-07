@@ -21,9 +21,6 @@ import dbus
 import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-from systemd_dbus.property import Property
-from systemd_dbus.exceptions import SystemdError
-
 
 class Target(object):
     """Abstraction class to org.freedesktop.systemd1.Target interface"""

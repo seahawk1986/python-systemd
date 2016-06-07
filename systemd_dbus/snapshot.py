@@ -22,7 +22,7 @@ import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
 from systemd_dbus.property import Property
-from systemd_dbus.exceptions import SystemdError
+from systemd_dbus.exceptions import check4error
 
 
 class Snapshot(object):
@@ -62,8 +62,6 @@ class Snapshot(object):
             setattr(attr_property, key, value)
         setattr(self, 'properties', attr_property)
 
+    @check4error
     def remove(self):
-        try:
-            self.__interface.Remove()
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        self.__interface.Remove()

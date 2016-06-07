@@ -24,7 +24,7 @@ dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 from systemd_dbus.unit import Unit
 from systemd_dbus.job import Job
 from systemd_dbus.property import Property
-from systemd_dbus.exceptions import SystemdError, check4error
+from systemd_dbus.exceptions import check4error
 
 
 class Manager(object):

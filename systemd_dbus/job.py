@@ -22,7 +22,7 @@ import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
 from systemd_dbus.property import Property
-from systemd_dbus.exceptions import SystemdError
+from systemd_dbus.exceptions import SystemdError, check4error
 
 
 class Job(object):
@@ -63,8 +63,6 @@ class Job(object):
             setattr(attr_property, key, value)
         setattr(self, 'properties', attr_property)
 
+    @check4error
     def cancel(self):
-        try:
-            self.__interface.Cancel()
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        self.__interface.Cancel()
