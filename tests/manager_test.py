@@ -3,10 +3,10 @@ import unittest
 import signal
 import dbus
 
-from systemd.manager import Manager
-from systemd.exceptions import SystemdError
-from systemd.unit import Unit
-from systemd.job import Job
+from systemd_dbus.manager import Manager
+from systemd_dbus.exceptions import SystemdError
+from systemd_dbus.unit import Unit
+from systemd_dbus.job import Job
 
 class ManagerTest(unittest.TestCase):
 
@@ -15,12 +15,12 @@ class ManagerTest(unittest.TestCase):
         self.assertRaises(error, callable, *args, **kwargs)
         try:
             callable(*args, **kwargs)
-        except error, e:
+        except error as e:
             self.assertEqual(message, str(e))
 
     def setUp(self):
         self.manager = Manager()
-    
+
     #def test_get_unit(self):
     #    self.assertIsInstance(self.manager.get_unit('network.service'), Unit)
         #Put this variables to a file named tests_settings.py
@@ -29,7 +29,7 @@ class ManagerTest(unittest.TestCase):
     #        SystemdError,
     #        'NoSuchUnit(Unit %s is not loaded.)' % NO_EXIST_SERVICE,
     #        self.manager.get_unit, NO_EXIST_SERVICE)
-    
+
     #def test_get_unit_by_pid(self):
     #    #Put this variables to a file named tests_settings.py
     #    EXIST_PID = 0
@@ -85,7 +85,7 @@ class ManagerTest(unittest.TestCase):
         self.assertIsInstance(
             self.manager.reload_or_restart_unit('sshd.service', 'replace'),
             Job)
-    
+
     def test_reload_or_try_restart_unit(self):
         self.assertIsInstance(
             self.manager.reload_or_try_restart_unit('sshd.service', 'fail'),
@@ -97,7 +97,7 @@ class ManagerTest(unittest.TestCase):
             self.manager.reload_or_try_restart_unit('sshd.service', 'isolate'),
             Job)
     """
-    
+
     #TODO: START TESTING FROM HERE TODO
     #def test_reload_unit(self):
     #    self.assertIsInstance(
