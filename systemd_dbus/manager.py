@@ -20,24 +20,11 @@
 import dbus
 import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-from functools import wraps
 
 from systemd_dbus.unit import Unit
 from systemd_dbus.job import Job
 from systemd_dbus.property import Property
-from systemd_dbus.exceptions import SystemdError
-
-
-def check4error(f):
-    wraps(f)
-
-    def wrapper(*args, **kwds):
-        try:
-            return f(*args, **kwds)
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
-            print(error)
-    return wrapper
+from systemd_dbus.exceptions import SystemdError, check4error
 
 
 class Manager(object):

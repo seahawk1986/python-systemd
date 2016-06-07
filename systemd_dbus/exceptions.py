@@ -16,6 +16,20 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import dbus
+from functools import wraps
+
+
+def check4error(f):
+    wraps(f)
+
+    def wrapper(*args, **kwds):
+        try:
+            return f(*args, **kwds)
+        except dbus.exceptions.DBusException as error:
+            raise SystemdError(error)
+            print(error)
+    return wrapper
 
 
 class SystemdError(Exception):

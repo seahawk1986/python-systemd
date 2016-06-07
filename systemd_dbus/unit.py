@@ -22,7 +22,7 @@ import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
 from systemd_dbus.property import Property
-from systemd_dbus.exceptions import SystemdError
+from systemd_dbus.exceptions import SystemdError, check4error
 from systemd_dbus.job import Job
 
 
@@ -63,6 +63,7 @@ class Unit(object):
             setattr(attr_property, key, value)
         setattr(self, 'properties', attr_property)
 
+    @check4error
     def kill(self, who, mode, signal):
         """Kill unit.
 
@@ -75,12 +76,9 @@ class Unit(object):
 
         @rtype: systemd_dbus.job.Job
         """
-        try:
-            self.__interface.KillUnit(who, mode, signal)
-        except dbus.exceptions.DBusException as error:
-            print(error)
-            raise SystemdError(error)
+        self.__interface.KillUnit(who, mode, signal)
 
+    @check4error
     def reload(self, mode):
         """Reload unit.
 
@@ -90,13 +88,11 @@ class Unit(object):
 
         @rtype: systemd_dbus.job.Job
         """
-        try:
-            job_path = self.__interface.Reload(mode)
-            job = Job(job_path)
-            return job
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        job_path = self.__interface.Reload(mode)
+        job = Job(job_path)
+        return job
 
+    @check4error
     def reload_or_restart(self, mode):
         """Reload or restart unit.
 
@@ -106,13 +102,11 @@ class Unit(object):
 
         @rtype: systemd_dbus.job.Job
         """
-        try:
-            job_path = self.__interface.ReloadOrRestart(mode)
-            job = Job(job_path)
-            return job
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        job_path = self.__interface.ReloadOrRestart(mode)
+        job = Job(job_path)
+        return job
 
+    @check4error
     def reload_or_try_restart(self, mode):
         """Reload or try restart unit.
 
@@ -122,19 +116,15 @@ class Unit(object):
 
         @rtype: systemd_dbus.job.Job
         """
-        try:
-            job_path = self.__interface.ReloadOrTryRestart(mode)
-            job = Job(job_path)
-            return job
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        job_path = self.__interface.ReloadOrTryRestart(mode)
+        job = Job(job_path)
+        return job
 
+    @check4error
     def reset_failed(self):
-        try:
-            self.__interface.ResetFailed()
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        self.__interface.ResetFailed()
 
+    @check4error
     def restart(self, mode):
         """Restart unit.
 
@@ -144,13 +134,11 @@ class Unit(object):
 
         @rtype: systemd_dbus.job.Job
         """
-        try:
-            job_path = self.__interface.Restart(mode)
-            job = Job(job_path)
-            return job
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        job_path = self.__interface.Restart(mode)
+        job = Job(job_path)
+        return job
 
+    @check4error
     def start(self, mode):
         """Start unit.
 
@@ -160,13 +148,11 @@ class Unit(object):
 
         @rtype: systemd_dbus.job.Job
         """
-        try:
-            job_path = self.__interface.Start(mode)
-            job = Job(job_path)
-            return job
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        job_path = self.__interface.Start(mode)
+        job = Job(job_path)
+        return job
 
+    @check4error
     def stop(self, mode):
         """Stop unit.
 
@@ -176,13 +162,11 @@ class Unit(object):
 
         @rtype: systemd_dbus.job.Job
         """
-        try:
-            job_path = self.__interface.Stop(mode)
-            job = Job(job_path)
-            return job
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        job_path = self.__interface.Stop(mode)
+        job = Job(job_path)
+        return job
 
+    @check4error
     def try_restart(self, mode):
         """Try restart unit.
 
@@ -192,9 +176,6 @@ class Unit(object):
 
         @rtype: L{systemd_dbus.job.Job}
         """
-        try:
-            job_path = self.__interface.TryRestart(mode)
-            job = Job(job_path)
-            return job
-        except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
+        job_path = self.__interface.TryRestart(mode)
+        job = Job(job_path)
+        return job
