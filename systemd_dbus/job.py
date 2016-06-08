@@ -20,6 +20,7 @@
 import dbus
 import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+import logging
 
 from systemd_dbus.property import Property
 from systemd_dbus.exceptions import SystemdError, check4error
@@ -33,27 +34,34 @@ class Job(object):
         else:
             self.__bus = dbus.SystemBus()
 
-        self.__proxy = self.__bus.get_object(
-            'org.freedesktop.systemd1',
-            job_path,
-        )
-        self.__interface = dbus.Interface(
-            self.__proxy,
-            'org.freedesktop.systemd1.Job',
-        )
+        try:
+            self.__proxy = self.__bus.get_object(
+                'org.freedesktop.systemd1',
+                job_path,
+            )
+            self.__interface = dbus.Interface(
+                self.__proxy,
+                'org.freedesktop.systemd1.Job',
+            )
 
-        self.__properties_interface = dbus.Interface(
-            self.__proxy,
-            'org.freedesktop.DBus.Properties')
+            self.__properties_interface = dbus.Interface(
+                self.__proxy,
+                'org.freedesktop.DBus.Properties')
 
-        self.__properties_interface.connect_to_signal(
-            'PropertiesChanged',
-            self.__on_properties_changed)
+            self.__properties_interface.connect_to_signal(
+                'PropertiesChanged',
+                self.__on_properties_changed)
 
-        self.__properties()
+        except dbus.exceptions.DBusException:
+            logging.debug('job vanished too quickly')
+        else:
+            self.__properties()
 
     def __on_properties_changed(self, *args, **kargs):
-        self.__properties()
+        try:
+            self.__properties()
+        except dbus.exceptions.DBusException:
+            logging.debug('job vanished too quickly')
 
     def __properties(self):
         properties = self.__properties_interface.GetAll(

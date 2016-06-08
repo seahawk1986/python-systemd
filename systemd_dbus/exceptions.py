@@ -17,7 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 import dbus
-import logging
 from functools import wraps
 
 
@@ -28,7 +27,6 @@ def check4error(f):
         try:
             return f(*args, **kwds)
         except dbus.exceptions.DBusException as error:
-            logging.exception(error)
             raise SystemdError(error)
     return wrapper
 
