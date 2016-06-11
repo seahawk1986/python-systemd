@@ -19,7 +19,6 @@
 import dbus
 import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-import logging
 from functools import wraps
 
 
@@ -30,18 +29,6 @@ def check4error(f):
         try:
             return f(*args, **kwds)
         except dbus.exceptions.DBusException as error:
-            raise SystemdError(error)
-    return wrapper
-
-
-def check4error_and_log(f):
-    wraps(f)
-
-    def wrapper(*args, **kwds):
-        try:
-            return f(*args, **kwds)
-        except dbus.exceptions.DBusException as error:
-            logging.exception(error)
             raise SystemdError(error)
     return wrapper
 
