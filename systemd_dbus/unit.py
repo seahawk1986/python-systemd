@@ -79,10 +79,11 @@ class Unit(object):
         self.__interface.KillUnit(who, mode, signal)
 
     @check4error
-    def reload(self, mode):
+    def reload(self, mode='replace'):
         """Reload unit.
 
         @param mode: Must be one of fail, replace or isolate.
+                     Defaults to replace.
 
         @raise SystemdError: Raised when mode is invalid.
 
@@ -93,10 +94,11 @@ class Unit(object):
         return job
 
     @check4error
-    def reload_or_restart(self, mode):
+    def reload_or_restart(self, mode='replace'):
         """Reload or restart unit.
 
         @param mode: Must be one of fail, replace or isolate.
+                     Defaults to replace.
 
         @raise SystemdError: Raised when mode is invalid.
 
@@ -107,10 +109,11 @@ class Unit(object):
         return job
 
     @check4error
-    def reload_or_try_restart(self, mode):
+    def reload_or_try_restart(self, mode='replace'):
         """Reload or try restart unit.
 
         @param mode: Must be one of fail, replace or isolate.
+                     Defaults to replace.
 
         @raise SystemdError: Raised when mode is invalid.
 
@@ -125,10 +128,11 @@ class Unit(object):
         self.__interface.ResetFailed()
 
     @check4error
-    def restart(self, mode):
+    def restart(self, mode='replace'):
         """Restart unit.
 
         @param mode: Must be one of fail, replace or isolate.
+                     Defaults to replace.
 
         @raise SystemdError: Raised when mode is invalid.
 
@@ -139,10 +143,10 @@ class Unit(object):
         return job
 
     @check4error
-    def start(self, mode):
+    def start(self, mode='replace'):
         """Start unit.
 
-        @param mode: Must be one of fail or replace.
+        @param mode: Must be one of fail or replace. Defaults to replace.
 
         @raise SystemdError: Raised when mode is invalid.
 
@@ -153,10 +157,10 @@ class Unit(object):
         return job
 
     @check4error
-    def stop(self, mode):
+    def stop(self, mode='replace'):
         """Stop unit.
 
-        @param mode:  Must be one of fail or replace.
+        @param mode:  Must be one of fail or replace. Defaults to replace.
 
         @raise SystemdError: Raised when mode is invalid.
 
@@ -167,10 +171,10 @@ class Unit(object):
         return job
 
     @check4error
-    def try_restart(self, mode):
+    def try_restart(self, mode='replace'):
         """Try restart unit.
 
-        @param mode: Must be one of "fail" or "replace.
+        @param mode: Must be one of "fail" or "replace. Defaults to replace.
 
         @raise SystemdError: Raised when mode is invalid.
 
