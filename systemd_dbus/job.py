@@ -29,6 +29,7 @@ from systemd_dbus.exceptions import SystemdError, check4error
 class Job(object):
     """Abstraction class to org.freedesktop.systemd1.Job interface"""
     logger = logging.getLogger(__name__)
+    
     def __init__(self, job_path, bus=None):
         if isinstance(bus, (dbus.SessionBus, dbus.SystemBus)):
             self.__bus = bus
@@ -65,7 +66,7 @@ class Job(object):
         try:
             self.__properties()
         except dbus.exceptions.DBusException:
-            logging.debug('job vanished too quickly')
+            self.logger.debug('job vanished too quickly')
 
     def __properties(self):
         properties = self.__properties_interface.GetAll(
