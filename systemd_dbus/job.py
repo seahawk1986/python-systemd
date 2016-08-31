@@ -54,12 +54,12 @@ class Job(object):
                 self.__on_properties_changed)
 
         except dbus.exceptions.DBusException:
-            logger.debug('job vanished too quickly')
+            self.logger.debug('job vanished too quickly')
         else:
             try:
                 self.__properties()
             except dbus.exceptions.DBusException:
-                logger.debug('job vanished too quickly')
+                self.logger.debug('job vanished too quickly')
 
     def __on_properties_changed(self, *args, **kargs):
         try:
